@@ -13,7 +13,10 @@ transRouter.use(
   })
 );
 transRouter.get("/", async (req, res) => {
-  return res.send(await TransactionsTrack.find());
+  return res.send(await Transactions.find());
+});
+transRouter.get("/balance", async (req, res) => {
+  return res.json(await TransactionsTrack.find());
 });
 transRouter.post("/", async (req, res) => {
   console.log(req.body);
@@ -34,7 +37,7 @@ transRouter.post("/", async (req, res) => {
       return await TransactionsTrack.findByIdAndUpdate(
         getTotals[0]._id.toString(),
         {
-          totAmount: _.sum([getTotals.totAmount, newTrans.amount]),
+          totAmount: _.sum([getTotals[0].totAmount, newTrans.amount]),
           totSavings: _.sum([newTrans.amount, getTotals[0].totSavings]),
         }
       );
@@ -45,7 +48,7 @@ transRouter.post("/", async (req, res) => {
       return await TransactionsTrack.findByIdAndUpdate(
         getTotals[0]._id.toString(),
         {
-          totAmount: _.subtract([getTotals[0].totAmount, newTrans.amount]),
+          totAmount: getTotals[0].totAmount - newTrans.amount,
           totExpense: _.sum([newTrans.amount, getTotals[0].totExpense]),
         }
       );
@@ -55,12 +58,12 @@ transRouter.post("/", async (req, res) => {
       return await TransactionsTrack.findByIdAndUpdate(
         getTotals[0]._id.toString(),
         {
-          totAmount: _.subtract([getTotals[0].totAmount, newTrans.amount]),
+          totAmount: getTotals[0].totAmount - newTrans.amount,
           totInvestment: _.sum([newTrans.amount, getTotals[0].totInvestment]),
         }
       );
     }
-    return res.json(newTrans);
+    return res.json(getTotals[0]);
   } catch (err) {
     console.log(err);
   }
