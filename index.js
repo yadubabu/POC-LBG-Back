@@ -23,7 +23,7 @@ app.get("/", async (req, res) => {
 
 app.use("/addtrans", require("./routes/transRouter"));
 app.use("/gettrans", require("./routes/transRouter"));
-app.use("/gettotals", require("./routes/transRouter"));
+app.use("/getbalance", require("./routes/transRouter"));
 app.use("/", require("./routes/userRouter"));
 // app.use("/", require("./routes/userRouter"));
 
