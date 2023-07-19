@@ -21,5 +21,14 @@ userRouter.post("/adduser", async (req, res) => {
     console.log(err);
   }
 });
+userRouter.post("/loginuser", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const getUser = await BudgetUser.findOne({ email });
+    return await res.status(200).json(getUser);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 module.exports = userRouter;
